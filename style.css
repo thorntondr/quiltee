@@ -1,0 +1,64 @@
+/* Add styles here for all devices */
+header {
+    text-align: center;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+main {
+    margin: 1rem;
+}
+
+button {
+    padding: 0.5rem;
+    font-size: 1rem;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #3E8E41;
+}
+
+footer {
+    text-align: center;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+p {
+    font-size: 1.2rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+/* Add styles here for screens less than 600px wide (e.g. smartphones) */
+@media only screen and (max-width: 600px) {
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    p {
+        font-size: 1.2rem;
+        line-height: 1.2;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+    }
+}
