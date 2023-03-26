@@ -13,75 +13,96 @@
     </header>
     <main>
         <h2>Specify quantity of each patch size</h2>
-        <form>
+        <form id="quilt-form">
             <h3>Squares</h3>
-            <label for="size4">4" x 4" patches:</label>
-            <input type="number" id="size4" name="size4" min="0" max="9999" value="0">
-            <br>
-            <label for="size8">8" x 8" patches:</label>
-            <input type="number" id="size8" name="size8" min="0" max="9999" value="0">
-            <br>
-            <label for="size12">12" x 12" patches:</label>
-            <input type="number" id="size12" name="size12" min="0" max="9999" value="0">
-            <br>
-            <label for="size16">16" x 16" patches:</label>
-            <input type="number" id="size16" name="size16" min="0" max="9999" value="0">
-            <br>
-            <label for="size20">20" x 20" patches:</label>
-            <input type="number" id="size20" name="size20" min="0" max="9999" value="0">
-            <br>
+            <div class="form-group">
+                <label for="4x4">4" x 4" patches:</label>
+                <input type="number" id="4x4" name="4x4" min="0" max="9999" value="0">
+            </div>
+            <div class="form-group">
+                <label for="8x8">8" x 8" patches:</label>
+                <input type="number" id="8x8" name="8x8" min="0" max="9999" value="0">
+            </div>
+            <div class="form-group">
+                <label for="12x12">12" x 12" patches:</label>
+                <input type="number" id="12x12" name="12x12" min="0" max="9999" value="0">
+            </div>
+            <div class="form-group">
+                <label for="16x16">16" x 16" patches:</label>
+                <input type="number" id="16x16" name="16x16" min="0" max="9999" value="0">
+            </div>
+            <div class="form-group">
+                <label for="20x20">20" x 20" patches:</label>
+                <input type="number" id="20x20" name="20x20" min="0" max="9999" value="0">
+            </div>
             <h3>Small rectangles</h3>
-            <label for="size4x8">4" x 8" patches:</label>
-            <input type="number" id="size4x8" name="size4x8" min="0" max="9999" value="0">
-            <br>
-            <label for="size8x4">8" x 4" patches:</label>
-            <input type="number" id="size8x4" name="size8x4" min="0" max="9999" value="0">
-            <br>
-            <label for="size4x12">4" x 12" patches:</label>
-            <input type="number" id="size4x12" name="size4x12" min="0" max="9999" value="0">
-            <br>
-            <label for="size12x4">12" x 4" patches:</label>
-            <input type="number" id="size12x4" name="size12x4" min="0" max="9999" value="0">
-            <br>
-            <label for="size8x12">8" x 12" patches:</label>
-            <input type="number" id="size8x12" name="size8x12" min="0" max="9999" value="0">
-            <br>
-            <label for="size12x8">12" x 8" patches:</label>
-            <input type="number" id="size12x8" name="size12x8" min="0" max="9999" value="0">
-            <br>
-            <label for="size8x16">8" x 16" patches:</label>
-            <input type="number" id="size8x16" name="size8x16" min="0" max="9999" value="0">
-            <br>
-            <label for="size16x8">16" x 8" patches:</label>
-            <input type="number" id="size16x8" name="size16x8" min="0" max="9999" value="0">
-            <br>
+            <div class="form-group">
+                <label for="4x8">4" x 8" patches:</label>
+                <input type="number" id="4x8" name="4x8" min="0" max="9999" value="0">
+            </div>
+            <div class="form-group">
+                <label for="8x4">8" x 4" patches:</label>
+                <input type="number" id="8x4" name="8x4" min="0" max="9999" value="0">
+            </div>
+            <div class="form-group">
+                <label for="4x12">4" x 12" patches:</label>
+                <input type="number" id="4x12" name="4x12" min="0" max="9999" value="0">
+            </div>
+            <div class="form-group">
+                <label for="12x4">12" x 4" patches:</label>
+                <input type="number" id="12x4" name="12x4" min="0" max="9999" value="0">
+            </div>
+            <div class="form-group">
+                <label for="8x12">8" x 12" patches:</label>
+                <input type="number" id="8x12" name="8x12" min="0" max="9999" value="0">
+            </div>
+            <div class="form-group">
+                <label for="12x8">12" x 8" patches:</label>
+                <input type="number" id="12x8" name="12x8" min="0" max="9999" value="0">
+            </div>
+            <div class="form-group">
+                <label for="8x16">8" x 16" patches:</label>
+                <input type="number" id="8x16" name="8x16" min="0" max="9999" value="0">
+            </div>
+            <div class="form-group">
+                <label for="16x8">16" x 8" patches:</label>
+                <input type="number" id="16x8" name="16x8" min="0" max="9999" value="0">
+            </div>
             <h3>Large rectangles</h3>
-            <label for="size8x20">8" x 20" patches:</label>
-            <input type="number" id="size8x20" name="size8x20" min="0" max="9999" value="0">
+            <div class="form-group">
+                <label for="8x20">8" x 20" patches:</label>
+                <input type="number" id="8x20" name="8x20" min="0" max="9999" value="0">
+            </div>
+            <div class="form-group">
+                <label for="20x8">20" x 8" patches:</label>
+                <input type="number" id="20x8" name="20x8" min="0" max="9999" value="0">
+            </div>
+            <div class="form-group">
+                <label for="12x16">12" x 16" patches:</label>
+                <input type="number" id="12x16" name="12x16" min="0" max="9999" value="0">
+            </div>
+            <div class="form-group">
+                <label for="16x12">16" x 12" patches:</label>
+                <input type="number" id="16x12" name="16x12" min="0" max="9999" value="0">
+            </div>
+            <div class="form-group">
+                <label for="12x20">12" x 20" patches:</label>
+                <input type="number" id="12x20" name="12x20" min="0" max="9999" value="0">
+            </div>
+            <div class="form-group">
+                <label for="20x12">20" x 12" patches:</label>
+                <input type="number" id="20x12" name="20x12" min="0" max="9999" value="0">
+            </div>
+            <div class="form-group">
+                <label for="16x20">16" x 20" patches:</label>
+                <input type="number" id="16x20" name="16x20" min="0" max="9999" value="0">
+            </div>
+            <div class="form-group">
+                <label for="20x16">20" x 16" patches:</label>
+                <input type="number" id="20x16" name="20x16" min="0" max="9999" value="0">
+            </div>
             <br>
-            <label for="size20x8">20" x 8" patches:</label>
-            <input type="number" id="size20x8" name="size20x8" min="0" max="9999" value="0">
-            <br>
-            <label for="size12x16">12" x 16" patches:</label>
-            <input type="number" id="size12x16" name="size12x16" min="0" max="9999" value="0">
-            <br>
-            <label for="size16x12">16" x 12" patches:</label>
-            <input type="number" id="size16x12" name="size16x12" min="0" max="9999" value="0">
-            <br>
-            <label for="size12x20">12" x 20" patches:</label>
-            <input type="number" id="size12x20" name="size12x20" min="0" max="9999" value="0">
-            <br>
-            <label for="size20x12">20" x 12" patches:</label>
-            <input type="number" id="size20x12" name="size20x12" min="0" max="9999" value="0">
-            <br>
-            <label for="size16x20">16" x 20" patches:</label>
-            <input type="number" id="size16x20" name="size16x20" min="0" max="9999" value="0">
-            <br>
-            <label for="size20x16">20" x 16" patches:</label>
-            <input type="number" id="size20x16" name="size20x16" min="0" max="9999" value="0">
-            <br>
-            <br>
-            <button type="submit">Generate Layouts</button>
+            <button type="submit">Generate Layout</button>
         </form>
     </main>
     <footer>
