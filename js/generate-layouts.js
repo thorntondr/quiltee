@@ -45,32 +45,74 @@ function shuffleArray(array) {
 
 function randomPattern(patches, maxWidth, maxHeight) {
   shuffleArray(patches);
-  pattern = { patches: [], width: 0, height: 0 };
-  let x = 0;
-  for (p of patches) {
-    let w = parseInt(p[0]);
-    let h = parseInt(p[1]);
-    pattern.patches.push({x:x, y:0, w:w, h:h});
-    x += w;
-    pattern.height = Math.max(pattern.height,h);
-  }
-  pattern.width = x;
-  return pattern;
+  let pattern = { patches: [], width: 0, height: 0 };
+
+  /// Single row
+  // let x = 0;
+  // for (const p of patches) {
+  //   pattern.patches.push({x:x, y:0, w:p.w, h:p.h});
+  //   x += p.w;
+  //   pattern.height = Math.max(pattern.height,p.h);
+  // }
+  // pattern.width = x;
+  // return pattern;
+
+  /// Real thing
   let rowWidths = [0];
   let colHeights = [0];
-  pattern_tmp = { patches: [], width: 0, height: 0 };
-  for (const p in patches) {
-    width_tmp = pattern_tmp.width;
-    height_tmp = pattern_tmp.height;
+  for (const p of patches) {
+    let min_area = maxWidth * maxHeight;
+    let X = 0;
+    let Y = 0;
     for (let x = 0; x < colHeights.length; x++) {
       let y = colHeights[x];
-      for (let i = 1; i < p[0]; i++) {
+      for (let i = 1; i < p.w; i++) {
         y = Math.max(y, colHeights[x + i]);
+      }
+      let w_tmp = Math.max(pattern.width, x + p.w);
+      let h_tmp = Math.max(pattern.height, y + p.h);
+      // if (Math.max(w_tmp, h_tmp) <= 1.6 * Math.min(w_tmp, h_tmp))
+      {
+        let area = w_tmp * h_tmp;
+        if (area < min_area) {
+          min_area = area;
+          X = x;
+          Y = y;
+        }  
       }
     }
     for (let y = 0; y < rowWidths.length; y++) {
-
+      let x = rowWidths[y];
+      for (let i = 1; i < p.h; i++) {
+        x = Math.max(x, rowWidths[y + i]);
+      }
+      let w_tmp = Math.max(pattern.width, x + p.w);
+      let h_tmp = Math.max(pattern.height, y + p.h);
+      // if (Math.max(w_tmp, h_tmp) <= 1.6 * Math.min(w_tmp, h_tmp))
+      {
+        let area = w_tmp * h_tmp;
+        if (area < min_area) {
+          min_area = area;
+          X = x;
+          Y = y;
+        }
+      }
     }
+    for (let i = 0; i < p.w; i++) {
+      if ((X+i) >= colHeights.length) {
+        colHeights.push(0);
+      }
+      colHeights[X+i] = Math.max(colHeights[X+i], Y+p.h);
+    }
+    for (let i = 0; i < p.h; i++) {
+      if ((Y+i) >= rowWidths.length) {
+        rowWidths.push(0);
+      }
+      rowWidths[Y+i] = Math.max(rowWidths[Y+i], X+p.w);
+    }
+    pattern.patches.push({ x: X, y: Y, w: p.w, h: p.h });
+    pattern.width = Math.max(pattern.width, X + p.w);
+    pattern.height = Math.max(pattern.height, Y + p.h);
   }
   return pattern;
 }
@@ -82,10 +124,12 @@ function generateAndDraw(patchCounts) {
   for (const patchSize in patchCounts) {
     const patchCount = patchCounts[patchSize];
     const dims = patchSize.split("x");
-    maxWidth += patchCount * dims[0];
-    maxHeight += patchCount * dims[1];
+    const w = parseInt(dims[0]);
+    const h = parseInt(dims[1]);
+    maxWidth += patchCount * w;
+    maxHeight += patchCount * h;
     for (let i = 0; i < patchCount; i++) {
-      patches.push(dims);
+      patches.push({ w: w, h: h });
     }
   }
   let pattern = randomPattern(patches, maxWidth, maxHeight);
