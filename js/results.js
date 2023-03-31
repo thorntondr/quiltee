@@ -4,7 +4,7 @@ function genAndDisplay() {
 
     // Generate and Display pattern
     var resultsContainer = document.getElementById("results-container");
-    resultsContainer.replaceChildren(generateLayout(patchCounts));
+    resultsContainer.replaceChildren(generateAndDraw(patchCounts));
 }
 function printResults() {
   const content = document.getElementById("results-container").innerHTML;
