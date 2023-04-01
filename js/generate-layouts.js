@@ -66,8 +66,8 @@ function randomPattern(patches, maxWidth, maxHeight) {
   let colHeights = [0];
   for (const p of patches) {
     let min_area = maxWidth * maxHeight;
-    let X = 0;
-    let Y = 0;
+    let X = Math.max.apply(Math, rowWidths);
+    let Y = Math.max.apply(Math, colHeights);
     for (let x = 0; x < colHeights.length; x++) {
       let y = colHeights[x];
       for (let i = 1; i < p.w; i++) {
@@ -141,7 +141,7 @@ function* patternGenerator() {
   }
 
   const minimumTime = 1000;
-  const maximumTime = 60000;
+  const maximumTime = 5000;
   let results = [];
   let bestArea = maxWidth * maxHeight;
   let startTime = new Date().getTime();
@@ -158,15 +158,18 @@ function* patternGenerator() {
     const currentTime = new Date().getTime();
     const elapsed = currentTime - startTime;
     if (elapsed >= minimumTime && results.length > 0) {
-      result = results.pop();
-      startTime = new Date().getTime(); // restart timer
+      let result = results.pop();
+      console.log("New pattern "+result.width+"x"+result.height);
       yield result;
     } else if (elapsed > maximumTime) {
-      console.log("Resetting target size");
+      console.log("Resetting target size and timer");
+      startTime = currentTime; // reset timer
       bestArea = maxWidth * maxHeight;  // reset target size
-      startTime = new Date().getTime(); // restart timer
+    } else if (results.length == 0) {
+      console.log("No results");
+    } else if (elapsed >= minimumTime) {
+      console.log("past the limit, but trying again anyway");
     }
-
   }
 }
 
