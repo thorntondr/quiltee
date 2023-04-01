@@ -1,10 +1,7 @@
 function genAndDisplay() {
-    // Get patch counts from local storage
-    var patchCounts = JSON.parse(localStorage.getItem("patchCounts"));
-
     // Generate and Display pattern
     var resultsContainer = document.getElementById("results-container");
-    resultsContainer.replaceChildren(generateAndDraw(patchCounts));
+    resultsContainer.replaceChildren(generateAndDraw());
 }
 function printResults() {
   const content = document.getElementById("results-container").innerHTML;
