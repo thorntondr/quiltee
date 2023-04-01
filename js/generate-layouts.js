@@ -1,6 +1,11 @@
 function drawPattern(pattern) {
   const svgns = "http://www.w3.org/2000/svg";
   const svg = document.createElementNS(svgns, "svg");
+  const rect = document.createElementNS(svgns, "rect");
+  rect.setAttribute("fill", "gray");
+  rect.setAttribute("width", "100%");
+  rect.setAttribute("height", "100%");
+  svg.appendChild(rect);
 
   let width = 0;
   let height = 0;
@@ -30,8 +35,7 @@ function drawPattern(pattern) {
     height = Math.max(height, y + h);
     width = Math.max(width, x + w);
   }
-  svg.setAttribute("width", width);
-  svg.setAttribute("height", height);
+  svg.setAttribute("viewBox", "-1 -1 " + (width + 2) + " " + (height + 2));
 
   return svg;
 }
@@ -153,14 +157,16 @@ function* patternGenerator() {
     }
     const currentTime = new Date().getTime();
     const elapsed = currentTime - startTime;
-    if (elapsed >= minimumTime && results.length > 0 || elapsed > maximumTime) {
+    if (elapsed >= minimumTime && results.length > 0) {
       result = results.pop();
-      if (elapsed > maximumTime) {
-        bestArea = maxWidth * maxHeight;  // reset target size
-      }
       startTime = new Date().getTime(); // restart timer
       yield result;
+    } else if (elapsed > maximumTime) {
+      console.log("Resetting target size");
+      bestArea = maxWidth * maxHeight;  // reset target size
+      startTime = new Date().getTime(); // restart timer
     }
+
   }
 }
 
@@ -171,7 +177,5 @@ function generateAndDraw() {
     patterns = patternGenerator();
   }
   let pattern = patterns.next().value;
-  maxWidth = pattern.width;
-  maxHeight = pattern.height;
   return drawPattern(pattern);
 }
