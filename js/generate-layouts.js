@@ -150,7 +150,7 @@ function* patternGenerator() {
   }
 
   const minimumTime = 1500;
-  const maximumTime = 60000;
+  const maximumTime = 5000;
   let results = [];
   let bestArea = maxWidth * maxHeight;
   let startTime = new Date().getTime();
@@ -177,6 +177,10 @@ function* patternGenerator() {
       startTime = currentTime; // reset timer
       bestArea = maxWidth * maxHeight;  // reset target size
     } else if (results.length == 0) {
+      // if (elapsed >= minimumTime) {
+      //   console.log(elapsed + " "  + bestArea);
+      //   // yield { width: 40, height: 40, blocks: [{ x: 0, y: 0, w: 40, h: 40 }] };
+      // }
       // console.log("No results");
     } else if (elapsed >= minimumTime) {
       console.log("past the limit, but trying again anyway for some reason");
