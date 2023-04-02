@@ -36,8 +36,14 @@ function drawPattern(pattern) {
     width = Math.max(width, x + w);
   }
   svg.setAttribute("viewBox", "-1 -1 " + (width + 2) + " " + (height + 2));
+  svg.setAttribute("width","100%");
+  const div = document.createElement("div");
+  const h2 = document.createElement("h2");
+  h2.innerText = pattern.width + "x" + pattern.height + " = " + (pattern.width * pattern.height);
+  div.appendChild(h2);
+  div.appendChild(svg);
 
-  return svg;
+  return div;
 }
 
 function shuffleArray(array) {
