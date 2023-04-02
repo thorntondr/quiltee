@@ -108,8 +108,8 @@ function randomPattern(blocks, maxWidth, maxHeight) {
     {
       TRban[(X - 1) + ',' + (Y + p.h)] = true;
       TLban[(X + p.w) + ',' + (Y + p.h)] = true;
-      BRban[(X + p.w) + ',' + (Y - 1)] = true;
-      BLban[(X - 1) + ',' + (Y - 1)] = true;
+      BRban[(X - 1) + ',' + (Y - 1)] = true;
+      BLban[(X + p.w) + ',' + (Y - 1)] = true;
     }
     for (let i = 0; i < p.w; i++) {
       if ((X + i) >= colHeights.length) {
