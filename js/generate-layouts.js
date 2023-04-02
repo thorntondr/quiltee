@@ -9,14 +9,14 @@ function drawPattern(pattern) {
 
   let width = 0;
   let height = 0;
-  for (const patch of pattern.patches) {
+  for (const block of pattern.blocks) {
     const rect = document.createElementNS(svgns, "rect");
-    let x = patch.x * 10;
-    let y = patch.y * 10;
+    let x = block.x * 10;
+    let y = block.y * 10;
     rect.setAttribute("x", x);
     rect.setAttribute("y", y);
-    let w = patch.w * 10;
-    let h = patch.h * 10;
+    let w = block.w * 10;
+    let h = block.h * 10;
     rect.setAttribute("width", w);
     rect.setAttribute("height", h);
     rect.setAttribute("fill", "white");
@@ -29,7 +29,7 @@ function drawPattern(pattern) {
     label.setAttribute("y", y + 15);
     label.setAttribute("fill", "black");
     label.setAttribute("font-size", "12px");
-    label.textContent = patch.w + "x" + patch.h;
+    label.textContent = block.w + "x" + block.h;
     svg.appendChild(label);
 
     height = Math.max(height, y + h);
@@ -47,14 +47,15 @@ function shuffleArray(array) {
   }
 }
 
-function randomPattern(patches, maxWidth, maxHeight) {
-  shuffleArray(patches);
-  let pattern = { patches: [], width: 0, height: 0 };
+function randomPattern(blocks, maxWidth, maxHeight) {
+  shuffleArray(blocks);
+  let pattern = { blocks: [], width: 0, height: 0 };
+  let stepSize = 4;
 
   /// Single row
   // let x = 0;
-  // for (const p of patches) {
-  //   pattern.patches.push({x:x, y:0, w:p.w, h:p.h});
+  // for (const p of blocks) {
+  //   pattern.blocks.push({x:x, y:0, w:p.w, h:p.h});
   //   x += p.w;
   //   pattern.height = Math.max(pattern.height,p.h);
   // }
@@ -64,36 +65,42 @@ function randomPattern(patches, maxWidth, maxHeight) {
   /// Real thing
   let rowWidths = [0];
   let colHeights = [0];
-  for (const p of patches) {
+  let TRban = {};
+  let TLban = {};
+  let BRban = {};
+  let BLban = {};
+  for (const p of blocks) {
     let min_area = maxWidth * maxHeight;
     let X = Math.max.apply(Math, rowWidths);
     let Y = Math.max.apply(Math, colHeights);
-    for (let x = 0; x < colHeights.length; x++) {
+    for (let x = 0; x < colHeights.length; x += stepSize) {
       let y = colHeights[x];
       for (let i = 1; i < p.w; i++) {
         y = Math.max(y, colHeights[x + i]);
       }
-      let w_tmp = Math.max(pattern.width, x + p.w);
-      let h_tmp = Math.max(pattern.height, y + p.h);
-      // if (Math.max(w_tmp, h_tmp) <= 1.6 * Math.min(w_tmp, h_tmp))
+      // if (!TRban[(x + p.w - 1) + "," + (y)] && !TLban[x + "," + y] && !BRban[(x + p.w - 1) + "," + (y + p.h - 1)] && !BLban[(x) + "," + (y + p.h - 1)])
       {
+        let w_tmp = Math.max(pattern.width, x + p.w);
+        let h_tmp = Math.max(pattern.height, y + p.h);
         let area = w_tmp * h_tmp;
         if (area < min_area) {
           min_area = area;
           X = x;
           Y = y;
         }
+      } else {
+        // console.log("!TRban["+(X+p.w-1)+","+Y] && !TLban[X+","+Y] && !BRban[(X+p.w-1)+","+(Y+p.h-1)] && !BLban[(X)+","+(Y+p.h-1)]));
       }
     }
-    for (let y = 0; y < rowWidths.length; y++) {
+    for (let y = 0; y < rowWidths.length; y += stepSize) {
       let x = rowWidths[y];
       for (let i = 1; i < p.h; i++) {
         x = Math.max(x, rowWidths[y + i]);
       }
-      let w_tmp = Math.max(pattern.width, x + p.w);
-      let h_tmp = Math.max(pattern.height, y + p.h);
-      // if (Math.max(w_tmp, h_tmp) <= 1.6 * Math.min(w_tmp, h_tmp))
+      // if (!TRban[(x + p.w - 1) + "," + (y)] && !TLban[x + "," + y] && !BRban[(x + p.w - 1) + "," + (y + p.h - 1)] && !BLban[(x) + "," + (y + p.h - 1)])
       {
+        let w_tmp = Math.max(pattern.width, x + p.w);
+        let h_tmp = Math.max(pattern.height, y + p.h);
         let area = w_tmp * h_tmp;
         if (area < min_area) {
           min_area = area;
@@ -102,6 +109,12 @@ function randomPattern(patches, maxWidth, maxHeight) {
         }
       }
     }
+    // {
+    //   TRban[(X - 1) + ',' + (Y + p.h)] = true;
+    //   TLban[(X + p.w) + ',' + (Y + p.h)] = true;
+    //   BRban[(X + p.w) + ',' + (Y - 1)] = true;
+    //   BLban[(X - 1) + ',' + (Y - 1)] = true;
+    // }
     for (let i = 0; i < p.w; i++) {
       if ((X + i) >= colHeights.length) {
         colHeights.push(0);
@@ -114,7 +127,7 @@ function randomPattern(patches, maxWidth, maxHeight) {
       }
       rowWidths[Y + i] = Math.max(rowWidths[Y + i], X + p.w);
     }
-    pattern.patches.push({ x: X, y: Y, w: p.w, h: p.h });
+    pattern.blocks.push({ x: X, y: Y, w: p.w, h: p.h });
     pattern.width = Math.max(pattern.width, X + p.w);
     pattern.height = Math.max(pattern.height, Y + p.h);
   }
@@ -122,53 +135,55 @@ function randomPattern(patches, maxWidth, maxHeight) {
 }
 
 function* patternGenerator() {
-  // Get patch counts from local storage
-  var patchCounts = JSON.parse(localStorage.getItem("patchCounts"));
+  // Get block counts from local storage
+  var blockCounts = JSON.parse(localStorage.getItem("blockCounts"));
 
-  let patches = [];
+  let blocks = [];
   let maxWidth = 0;
   let maxHeight = 0;
-  for (const patchSize in patchCounts) {
-    const patchCount = patchCounts[patchSize];
-    const dims = patchSize.split("x");
+  for (const blockSize in blockCounts) {
+    const blockCount = blockCounts[blockSize];
+    const dims = blockSize.split("x");
     const w = parseInt(dims[0]);
     const h = parseInt(dims[1]);
-    maxWidth += patchCount * w;
-    maxHeight += patchCount * h;
-    for (let i = 0; i < patchCount; i++) {
-      patches.push({ w: w, h: h });
+    maxWidth += blockCount * w;
+    maxHeight += blockCount * h;
+    for (let i = 0; i < blockCount; i++) {
+      blocks.push({ w: w, h: h });
     }
   }
 
-  const minimumTime = 1000;
-  const maximumTime = 5000;
+  const minimumTime = 1500;
+  const maximumTime = 60000;
   let results = [];
   let bestArea = maxWidth * maxHeight;
   let startTime = new Date().getTime();
   while (true) {
-    let pattern = randomPattern(patches, maxWidth, maxHeight);
+    let pattern = randomPattern(blocks, maxWidth, maxHeight);
+    const currentTime = new Date().getTime();
+    const elapsed = currentTime - startTime;
     let area = pattern.width * pattern.height;
     if (area <= bestArea && Math.max(pattern.width, pattern.height) < 2 * Math.min(pattern.width, pattern.height)) {
       if (area < bestArea) {
-        results = [];
+        if (elapsed < minimumTime) {
+          results = [];
+        }
         bestArea = area;
       }
       results.push(pattern);
     }
-    const currentTime = new Date().getTime();
-    const elapsed = currentTime - startTime;
     if (elapsed >= minimumTime && results.length > 0) {
       let result = results.pop();
-      console.log("New pattern "+result.width+"x"+result.height);
+      console.log("New pattern " + result.width + "x" + result.height);
       yield result;
     } else if (elapsed > maximumTime) {
       console.log("Resetting target size and timer");
       startTime = currentTime; // reset timer
       bestArea = maxWidth * maxHeight;  // reset target size
     } else if (results.length == 0) {
-      console.log("No results");
+      // console.log("No results");
     } else if (elapsed >= minimumTime) {
-      console.log("past the limit, but trying again anyway");
+      console.log("past the limit, but trying again anyway for some reason");
     }
   }
 }

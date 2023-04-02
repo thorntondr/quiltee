@@ -1,8 +1,9 @@
 function genAndDisplay() {
-    // Generate and Display pattern
-    var resultsContainer = document.getElementById("results-container");
-    resultsContainer.replaceChildren(generateAndDraw());
+  // Generate and Display pattern
+  var resultsContainer = document.getElementById("results-container");
+  resultsContainer.replaceChildren(generateAndDraw());
 }
+
 function printResults() {
   const content = document.getElementById("results-container").innerHTML;
   const printWindow = window.open('', 'PrintWindow', 'height=400,width=600');
@@ -15,8 +16,9 @@ function printResults() {
   printWindow.print();
   printWindow.close();
 }
+
 document.addEventListener("DOMContentLoaded", function () {
-    genAndDisplay();
-    document.getElementById('generate-button').addEventListener("click", genAndDisplay);
-    document.getElementById('print-button').addEventListener("click", printResults);
+  genAndDisplay();
+  document.getElementById('generate-button').addEventListener("click", genAndDisplay);
+  document.getElementById('print-button').addEventListener("click", printResults);
 });
