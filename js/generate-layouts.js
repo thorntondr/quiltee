@@ -78,8 +78,7 @@ function randomPattern(blocks, maxWidth, maxHeight) {
       for (let i = 1; i < p.w; i++) {
         y = Math.max(y, colHeights[x + i]);
       }
-      // if (!TRban[(x + p.w - 1) + "," + (y)] && !TLban[x + "," + y] && !BRban[(x + p.w - 1) + "," + (y + p.h - 1)] && !BLban[(x) + "," + (y + p.h - 1)])
-      {
+      if (!TRban[(x + p.w - 1) + "," + (y)] && !TLban[x + "," + y] && !BRban[(x + p.w - 1) + "," + (y + p.h - 1)] && !BLban[(x) + "," + (y + p.h - 1)]) {
         let w_tmp = Math.max(pattern.width, x + p.w);
         let h_tmp = Math.max(pattern.height, y + p.h);
         let area = w_tmp * h_tmp;
@@ -88,8 +87,6 @@ function randomPattern(blocks, maxWidth, maxHeight) {
           X = x;
           Y = y;
         }
-      } else {
-        // console.log("!TRban["+(X+p.w-1)+","+Y] && !TLban[X+","+Y] && !BRban[(X+p.w-1)+","+(Y+p.h-1)] && !BLban[(X)+","+(Y+p.h-1)]));
       }
     }
     for (let y = 0; y < rowWidths.length; y += stepSize) {
@@ -97,8 +94,7 @@ function randomPattern(blocks, maxWidth, maxHeight) {
       for (let i = 1; i < p.h; i++) {
         x = Math.max(x, rowWidths[y + i]);
       }
-      // if (!TRban[(x + p.w - 1) + "," + (y)] && !TLban[x + "," + y] && !BRban[(x + p.w - 1) + "," + (y + p.h - 1)] && !BLban[(x) + "," + (y + p.h - 1)])
-      {
+      if (!TRban[(x + p.w - 1) + "," + (y)] && !TLban[x + "," + y] && !BRban[(x + p.w - 1) + "," + (y + p.h - 1)] && !BLban[(x) + "," + (y + p.h - 1)]) {
         let w_tmp = Math.max(pattern.width, x + p.w);
         let h_tmp = Math.max(pattern.height, y + p.h);
         let area = w_tmp * h_tmp;
@@ -109,12 +105,12 @@ function randomPattern(blocks, maxWidth, maxHeight) {
         }
       }
     }
-    // {
-    //   TRban[(X - 1) + ',' + (Y + p.h)] = true;
-    //   TLban[(X + p.w) + ',' + (Y + p.h)] = true;
-    //   BRban[(X + p.w) + ',' + (Y - 1)] = true;
-    //   BLban[(X - 1) + ',' + (Y - 1)] = true;
-    // }
+    {
+      TRban[(X - 1) + ',' + (Y + p.h)] = true;
+      TLban[(X + p.w) + ',' + (Y + p.h)] = true;
+      BRban[(X + p.w) + ',' + (Y - 1)] = true;
+      BLban[(X - 1) + ',' + (Y - 1)] = true;
+    }
     for (let i = 0; i < p.w; i++) {
       if ((X + i) >= colHeights.length) {
         colHeights.push(0);
