@@ -79,7 +79,11 @@ function randomPattern(blocks, maxWidth, maxHeight) {
   let TLban = {};
   let BRban = {};
   let BLban = {};
-  for (const p of blocks) {
+  for (const b of blocks) {
+    let p = b;
+    if (Math.random() < 0.5) {
+      p = {w:b.h, h:b.w};
+    }
     let min_cost = costFunction(maxWidth, maxHeight);
     let X = Math.max.apply(Math, rowWidths);
     let Y = Math.max.apply(Math, colHeights);
