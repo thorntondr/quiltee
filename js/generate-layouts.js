@@ -39,7 +39,7 @@ function drawPattern(pattern) {
   svg.setAttribute("width","100%");
   const div = document.createElement("div");
   const h2 = document.createElement("h2");
-  h2.innerText = pattern.width + "x" + pattern.height + " = " + (pattern.width * pattern.height);
+  h2.innerText = pattern.width + "x" + pattern.height;
   div.appendChild(h2);
   div.appendChild(svg);
 
@@ -51,6 +51,10 @@ function shuffleArray(array) {
     const j = Math.floor(Math.random() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]];
   }
+}
+
+function costFunction(width, height) {
+  return width * width + height * height;
 }
 
 function randomPattern(blocks, maxWidth, maxHeight) {
@@ -76,7 +80,7 @@ function randomPattern(blocks, maxWidth, maxHeight) {
   let BRban = {};
   let BLban = {};
   for (const p of blocks) {
-    let min_area = maxWidth * maxHeight;
+    let min_cost = costFunction(maxWidth, maxHeight);
     let X = Math.max.apply(Math, rowWidths);
     let Y = Math.max.apply(Math, colHeights);
     for (let x = 0; x < colHeights.length; x += stepSize) {
@@ -87,9 +91,9 @@ function randomPattern(blocks, maxWidth, maxHeight) {
       if (!TRban[(x + p.w - 1) + "," + (y)] && !TLban[x + "," + y] && !BRban[(x + p.w - 1) + "," + (y + p.h - 1)] && !BLban[(x) + "," + (y + p.h - 1)]) {
         let w_tmp = Math.max(pattern.width, x + p.w);
         let h_tmp = Math.max(pattern.height, y + p.h);
-        let area = w_tmp * h_tmp;
-        if (area < min_area) {
-          min_area = area;
+        let cost = costFunction(w_tmp, h_tmp);
+        if (cost < min_cost) {
+          min_cost = cost;
           X = x;
           Y = y;
         }
@@ -103,9 +107,9 @@ function randomPattern(blocks, maxWidth, maxHeight) {
       if (!TRban[(x + p.w - 1) + "," + (y)] && !TLban[x + "," + y] && !BRban[(x + p.w - 1) + "," + (y + p.h - 1)] && !BLban[(x) + "," + (y + p.h - 1)]) {
         let w_tmp = Math.max(pattern.width, x + p.w);
         let h_tmp = Math.max(pattern.height, y + p.h);
-        let area = w_tmp * h_tmp;
-        if (area < min_area) {
-          min_area = area;
+        let cost = costFunction(w_tmp, h_tmp);
+        if (cost < min_cost) {
+          min_cost = cost;
           X = x;
           Y = y;
         }
@@ -158,19 +162,21 @@ function* patternGenerator() {
   const minimumTime = 1500;
   const maximumTime = 5000;
   let results = [];
-  let bestArea = maxWidth * maxHeight;
+  let minCost = costFunction(maxWidth, maxHeight);
   let startTime = new Date().getTime();
   while (true) {
     let pattern = randomPattern(blocks, maxWidth, maxHeight);
     const currentTime = new Date().getTime();
     const elapsed = currentTime - startTime;
-    let area = pattern.width * pattern.height;
-    if (area <= bestArea && Math.max(pattern.width, pattern.height) < 2 * Math.min(pattern.width, pattern.height)) {
-      if (area < bestArea) {
+    let cost = costFunction(pattern.width, pattern.height);
+    if (cost <= minCost
+      //  && Math.max(pattern.width, pattern.height) < 2 * Math.min(pattern.width, pattern.height)
+       ) {
+      if (cost < minCost) {
         if (elapsed < minimumTime) {
           results = [];
         }
-        bestArea = area;
+        minCost = cost;
       }
       results.push(pattern);
     }
@@ -181,10 +187,10 @@ function* patternGenerator() {
     } else if (elapsed > maximumTime) {
       console.log("Resetting target size and timer");
       startTime = currentTime; // reset timer
-      bestArea = maxWidth * maxHeight;  // reset target size
+      minCost = costFunction(maxWidth, maxHeight);  // reset target size
     } else if (results.length == 0) {
       // if (elapsed >= minimumTime) {
-      //   console.log(elapsed + " "  + bestArea);
+      //   console.log(elapsed + " "  + minCost);
       //   // yield { width: 40, height: 40, blocks: [{ x: 0, y: 0, w: 40, h: 40 }] };
       // }
       // console.log("No results");
